@@ -1,0 +1,25 @@
+name: OSV-Scanner Security Audit
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  # Opsional: Jalankan audit terjadwal setiap minggu (Senin pukul 00:00 UTC)
+  # schedule:
+  #   - cron: '0 0 * * 1'
+
+permissions:
+  # Diperlukan untuk membaca metadata actions dan mengunggah SARIF ke tab GitHub Security
+  actions: read
+  contents: read
+  security-events: write
+
+jobs:
+  osv-scan:
+    name: SCA Dependency Vulnerability Scan
+    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@v1.9.2
+    with:
+      scan-args: |-
+        -r
+        ./
